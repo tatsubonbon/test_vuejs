@@ -1,118 +1,49 @@
 <script setup lang="ts">
-import { Ref, ref } from 'vue';
-import { RouterLink, RouterView, useRouter } from 'vue-router';
-import HelloWorld from './components/HelloWorld.vue';
+import { ref } from 'vue';
+import { RouterView, useRouter } from 'vue-router';
+import { BattleField } from './model/battle/field';
+import { Garura } from './model/pokemon/garura';
+import { Pikachu } from './model/pokemon/pikachu';
 
 const router = useRouter();
-interface styleType {
-  fontSize: number;
-  color: string;
+
+const pikachu = new Pikachu()
+const garura = new Garura();
+const field = new BattleField(pikachu,garura)
+
+const tequniques = ref(pikachu.tequniques)
+const myPokemonHP = ref(pikachu.hp.current)
+const opponentPokemonHP = ref(garura.hp.current)
+
+function selectAttack(index: number) {
+  field.battle(index)
+  opponentPokemonHP.value = garura.hp.current
+  myPokemonHP.value = pikachu.hp.current
 }
 
-const testStyle: Ref<styleType> =  ref({
-  fontSize: 30,
-  color: "pink"
-})
-
-function executeRequest() {
-  request().then((res) => {
-    console.log(res);
-  }).catch((e) => {
-    router.push({name: 'about'});
-  })
-}
-
-async function request() {
-  try {
-    const test = 'request execute';
-    return test;
-    // throw new Error("error");
-  } catch (error) {
-    console.log("error occured")
-    throw new Error("error")
-  }
-}
 </script>
 
 <template>
   <header>
-    <button v-on:click="executeRequest()">testButton</button>
-    <p v-bind:style="testStyle">test</p>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+    <!-- <button v-on:click="executeRequest()">testButton</button> -->
+    <!-- <p v-bind:style="testStyle">test</p> -->
+    <!-- <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" /> -->
 
-    <div class="wrapper">
+    <!-- <div class="wrapper">
       <HelloWorld msg="You did it!" />
+    </div> -->
+    <h1>{{ garura.name }}</h1>
+    <h2>{{ opponentPokemonHP }}</h2>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
+    <hr>
+
+    <h1>{{ pikachu.name }}</h1>
+    <h2>{{ myPokemonHP }}</h2>
+    <li v-for="(tequnique, index) in tequniques" :key="tequnique.name">
+      <button @click="selectAttack(index)">{{ tequnique.name }}</button>
+    </li>
+
   </header>
 
   <RouterView />
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>

@@ -1,0 +1,1 @@
+type Attribute = "NORMAL" | "MIZU" | "HI" | "DENKI"
