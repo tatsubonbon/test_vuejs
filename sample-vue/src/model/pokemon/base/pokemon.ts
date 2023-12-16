@@ -57,8 +57,9 @@ export class Pokemon {
     get tequniques(): Tequnique[] {
         return this._tequniques;
     }
-    get attack(): IAttack {
-        return this._attack;
+
+    attack(damage: Damage): IAttack {
+        return this._attack.attack(damage);
     }
 
     damaged(damage: Damage): void {

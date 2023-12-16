@@ -15,7 +15,7 @@ export class BattleField {
             this.myPokemon.tequniques[tequniqueIndex],
             this.opponent.defensePower
         )
-        for (const value of this.myPokemon.attack.attack(damage)) {
+        for (const value of this.myPokemon.attack(damage)) {
             this.opponent.damaged(value)
         }
     }
@@ -28,7 +28,7 @@ export class BattleField {
             selectTequnique,
             this.myPokemon.defensePower
         )
-        for (const value of this.opponent.attack.attack(damage)) {
+        for (const value of this.opponent.attack(damage)) {
             console.log(value.value())
             this.myPokemon.damaged(value)
         }
